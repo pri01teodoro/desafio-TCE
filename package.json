@@ -1,0 +1,22 @@
+{
+  "name": "desafio-tce",
+  "version": "1.0.0",
+  "description": "Uma aplicação Web com API REST e Web App para cadastro de pessoas.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "seed": "node src/seeds/populate.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "faker-br": "^0.4.1",
+    "mongoose": "^7.0.3",
+    "seed": "^0.4.4"
+  }
+}
