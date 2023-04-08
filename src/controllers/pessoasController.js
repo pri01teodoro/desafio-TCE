@@ -56,7 +56,7 @@ class PessoasController {
             Pessoa.findById(id)
                 .then(pessoa => {
                     if (!pessoa) {
-                        return res.status(400).json({ error: true, code: 404, message: "Pessoa não encontrada" })
+                        return res.status(400).json({ error: true, code: 404, message: "Cadastro não encontrado" })
                     }
                     return res.json(pessoa)
                 }).catch(err => {
@@ -157,11 +157,11 @@ class PessoasController {
                 pessoa.telefone = req.body.telefone;
 
                 pessoa.save();
-                return res.status(200).json({ error: false, code: 200, message: "Pessoa atualizada com sucesso" })
+                return res.status(200).json({ error: false, code: 200, message: "Cadastro atualizado com sucesso!" })
             }
             ).catch(err => {
                 if (err.kind === 'ObjectId') {
-                    return res.status(404).json({ error: true, code: 404, message: "Pessoa não encontrada" })
+                    return res.status(404).json({ error: true, code: 404, message: "Cadastro não encontrado" })
                 }
                 return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
             }
@@ -173,7 +173,7 @@ class PessoasController {
         }
     }
 
-    // DELETE - Deletar Pessoa por ID
+    // DELETE - Remover Pessoa por ID
 
     static deletarPessoa = async (req, res) => {
         try {
@@ -184,13 +184,13 @@ class PessoasController {
             await Pessoa.findByIdAndDelete(id)
                 .then(pessoa => {
                     if (!pessoa) {
-                        return res.status(404).json({ error: true, code: 404, message: "Pessoa não encontrada" })
+                        return res.status(404).json({ error: true, code: 404, message: "Cadastro não encontrado" })
                     }
-                    return res.status(200).json({ error: false, code: 200, message: "Pessoa deletada com sucesso" })
+                    return res.status(200).json({ error: false, code: 200, message: "Cadastro removido com sucesso!" })
                 }
                 ).catch(err => {
                     if (err.kind === 'ObjectId' || err.name === 'NotFound') {
-                        return res.status(404).json({ error: true, code: 404, message: "Pessoa não encontrada" })
+                        return res.status(404).json({ error: true, code: 404, message: "Cadastro não encontrado" })
                     }
                     return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
                 }  )
