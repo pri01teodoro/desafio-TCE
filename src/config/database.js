@@ -12,6 +12,7 @@ await mongoose.connect(process.env.MONGODB_URL, {
   .catch(error => {
     console.log('Erro na conexão com o MongoDB: ' + error)
   });
+  
 
 let db = mongoose.connection;
 
