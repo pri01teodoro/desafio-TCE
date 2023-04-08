@@ -13,7 +13,7 @@ const pessoaSchema = new mongoose.Schema(
         //     type: String, 
         //     required: true
         // },
-        filiacao: {
+        filiacao: { // nem todas as pessoas possuem o registro do pai, por isso não é um campo obrigatório, porém o da mãe sim
             mae: { type: String, required: true },
             pai: { type: String, required: false },
         },
