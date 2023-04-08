@@ -1,88 +1,89 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import mongoosePaginate from 'mongoose-paginate';
+
 
 const pessoaSchema = new mongoose.Schema(
 
     {
-        nome: { 
-            type: String, 
-            maxlength: 200, 
-            required: true 
+        nome: {
+            type: String,
+            required: true
         },
-        
         // filiacao: { 
         //     type: String, 
         //     required: true
         // },
+        filiacao: {
+            mae: { type: String, required: true },
+            pai: { type: String, required: false },
+        },
 
-        filiacao: [
-            {
-                mae: { type: String, required: true },
-                pai: { type: String, required: false },
-            }
-        ],
-
-        dataNascimento: { 
-            type: Date, 
+        dataNascimento: {
+            type: Date,
             required: true
         },
 
-        cpf: { 
-            type: Number, 
-            maxlength: 14, 
-            required: true, 
-            trim: true
-        },
-        
-        cep: { 
-            type: Number,
-            maxlength: 8,
-            required: true,  
-            trim: true
-        },
-
-        logradouro: { 
-            type: String, 
-            required: true
-        },
-
-        numero: { 
-            type: Number,
-            required: true, 
-            trim: true
-        },
-
-        bairro: { 
-            type: String , 
-            required: true
-        },
-
-        cidade: { 
+        cpf: {
             type: String,
-            required: true 
+            maxlength: 14,
+            required: true,
+            trim: true
         },
 
-        estado: { 
-            type: String , 
+        cep: {
+            type: String,
+            maxlength: 9,
+            required: true,
+            trim: true
+        },
+
+        logradouro: {
+            type: String,
+            required: true
+        },
+
+        numero: {
+            type: Number,
+            required: true,
+            trim: true
+        },
+
+        bairro: {
+            type: String,
+            required: true
+        },
+
+        cidade: {
+            type: String,
+            required: true
+        },
+
+        estado: {
+            type: String,
             required: true
         },
 
         email: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
         },
 
-        telefone: { 
-            type: Number , 
+        telefone: {
+            type: String,
             required: true,
             trim: true
         },
-        
+
     },
     { versionKey: false }
 
 );
 
+pessoaSchema.plugin(mongoosePaginate);
 const Pessoa = mongoose.model('Pessoa', pessoaSchema);
+
+
 
 export default Pessoa;

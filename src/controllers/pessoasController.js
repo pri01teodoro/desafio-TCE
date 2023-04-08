@@ -1,5 +1,6 @@
 import Pessoa from "../models/Pessoa.js";
 
+
 class PessoasController {
 
     // GET - Listar todas as Pessoas || por nome || por cpf 
@@ -10,6 +11,7 @@ class PessoasController {
             const nome = req.query.nome;
             const page = req.query.page;
             const perPage = req.query.perPage;
+            
 
             // limitar a quantidade máxima por requisição
             const options = {
@@ -41,7 +43,7 @@ class PessoasController {
             }
 
         } catch (err) {
-
+            console.log(err)
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
         }
     }
@@ -52,16 +54,18 @@ class PessoasController {
             const id = req.params.id;
 
             Pessoa.findById(id)
-                .exec((err, pessoas) => {
-                    if (err) {
-                        return res.status(400).json({ error: true, code: 400, message: "ID inválido" })
+                .then(pessoa => {
+                    if (!pessoa) {
+                        return res.status(400).json({ error: true, code: 404, message: "Pessoa não encontrada" })
                     }
-                    if (!pessoas) {
-                        return res.status(404).json({ code: 404, message: "Cadastro não encontrado" })
-                    } else {
-                        return res.status(200).send(pessoas);
+                    return res.json(pessoa)
+                }).catch(err => {
+                    if (err.kind === 'ObjectId') {
+                        return res.status(400).json({ error: true, code: 404, message: "ID inválido" })
                     }
-                })
+                    return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
+                }
+                )
         } catch (err) {
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
         }
@@ -103,16 +107,11 @@ class PessoasController {
                 return res.status(400).json({ error: true, code: 400, message: erros });
             }
 
-            const pessoaSalva = await novaPessoa.save((err) => { //Salvar caso não encontre erros
-                if (!err) {
-                    res.status(201).send(pessoaSalva.toJSON());
-
-                } else {
-                    return res.status(500).json({ error: true, code: 500, message: "Erro nos dados, confira e repita" })
-                }
-            });
+            await novaPessoa.save();
+            res.status(201).send(novaPessoa.toJSON());
 
         } catch (err) {
+            console.log(err)
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
         }
     }
@@ -143,15 +142,30 @@ class PessoasController {
             }
 
             //Atualizar caso não encontre erro 
-            await Pessoa.findByIdAndUpdate(id, { $set: req.body }, (err) => {
-                if (!err) {
-                    res.status(200).send({ message: 'Cadastro atualizado com sucesso' })
+            await Pessoa.findByIdAndUpdate(id).then(pessoa => {
+                pessoa.nome = req.body.nome;
+                pessoa.filiacao = req.body.filiacao;
+                pessoa.dataNascimento = req.body.dataNascimento;
+                pessoa.cpf = req.body.cpf;
+                pessoa.cep = req.body.cep;
+                pessoa.logradouro = req.body.logradouro;
+                pessoa.numero = req.body.numero;
+                pessoa.bairro = req.body.bairro;
+                pessoa.cidade = req.body.cidade;
+                pessoa.estado = req.body.estado;
+                pessoa.email = req.body.email;
+                pessoa.telefone = req.body.telefone;
 
-                } else {
-
-                    return res.status(500).json({ error: true, code: 500, message: "Erro nos dados, confira e repita" })
+                pessoa.save();
+                return res.status(200).json({ error: false, code: 200, message: "Pessoa atualizada com sucesso" })
+            }
+            ).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).json({ error: true, code: 404, message: "Pessoa não encontrada" })
                 }
-            })
+                return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
+            }
+            )
 
         }
         catch (err) {
@@ -167,13 +181,19 @@ class PessoasController {
             // retorno da busca desejada
             const id = req.params.id;
 
-            await Pessoa.findByIdAndDelete(id, (err) => {
-                if (!err) {
-                    res.status(200).send({ message: 'Cadastro removido com sucesso' })
-                } else {
-                    return res.status(500).json({ error: true, code: 500, message: "Erro nos dados, confira e repita" })
+            await Pessoa.findByIdAndDelete(id)
+                .then(pessoa => {
+                    if (!pessoa) {
+                        return res.status(404).json({ error: true, code: 404, message: "Pessoa não encontrada" })
+                    }
+                    return res.status(200).json({ error: false, code: 200, message: "Pessoa deletada com sucesso" })
                 }
-            })
+                ).catch(err => {
+                    if (err.kind === 'ObjectId' || err.name === 'NotFound') {
+                        return res.status(404).json({ error: true, code: 404, message: "Pessoa não encontrada" })
+                    }
+                    return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
+                }  )
         } catch (err) {
             console.error(err);
             return res.status(500).json({ error: true, code: 500, message: "Erro interno do Servidor" })
@@ -185,3 +205,4 @@ class PessoasController {
 }
 
 export default PessoasController;
+
