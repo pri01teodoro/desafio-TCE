@@ -1,0 +1,27 @@
+.card{
+    background: #222224;
+    border-radius: 0 0 10 10;
+    height: 96px;
+    margin-top: 48px;
+}
+
+.container{
+    max-width: 1200px;
+    margin: 0 auto ;
+    padding-top: 40px;
+    display: flex;
+}
+
+.font{
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: white;
+}
+
+.container__font{
+    display: flex;
+    flex-direction: column;
+    
+}
+

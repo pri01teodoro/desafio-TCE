@@ -1,0 +1,23 @@
+.container__button {
+    display: flex;
+    max-width: 1200px;
+    flex-direction: row-reverse;
+    margin: 0 auto;
+    gap: 24px;
+    margin-top: 96px;
+}
+
+.input {
+    background-color: #222224;
+    color: #FFFFFF;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    background: #222224;
+    border-radius: 10px;
+    height: 38px;
+    width: 159px;
+    cursor: pointer;
+
+
+}

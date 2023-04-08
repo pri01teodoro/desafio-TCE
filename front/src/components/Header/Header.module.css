@@ -1,0 +1,23 @@
+.header {
+    background: #222224;
+    border-radius: 0 0 10 10;
+    height: 96px;
+}
+
+.header__container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 36px;
+    
+}
+
+.header__title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+}
